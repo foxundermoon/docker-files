@@ -1,7 +1,9 @@
 
 
 
+# source code
 [https://github.com/shadowsocks/go-shadowsocks2](https://github.com/shadowsocks/go-shadowsocks2)
+
 # usage
 
 ## help
@@ -37,6 +39,8 @@ Usage of /shadowsocks2:
         verbose mode
 ```
 
+---
+
 # Basic Usage
 
 ## Server
@@ -53,7 +57,7 @@ AEAD_CHACHA20_POLY1305 AEAD cipher with password your-password.
 Start a client connecting to the above server. The client listens on port 1080 for incoming SOCKS5 connections, and tunnels both UDP and TCP on port 8053 and port 8054 to 8.8.8.8:53 and 8.8.4.4:53 respectively.
 
 ```bash
-docker run -d --name go-shadowsocks2  foxundermoon/go-shadowsocks2 -s  -p 8488:8488  foxundermoon/go-shadowsocks2 -c 'ss://AEAD_CHACHA20_POLY1305:your-password@[server_address]:8488' -verbose -socks :1080 -u -udptun :8053=8.8.8.8:53,:8054=8.8.4.4:53 -tcptun :8053=8.8.8.8:53,:8054=8.8.4.4:53
+docker run -d --name go-shadowsocks2-server  foxundermoon/go-shadowsocks2 -s  -p 1080:1080  foxundermoon/go-shadowsocks2 -c 'ss://AEAD_CHACHA20_POLY1305:your-password@[server_address]:8488' -verbose -socks :1080 -u -udptun :8053=8.8.8.8:53,:8054=8.8.4.4:53 -tcptun :8053=8.8.8.8:53,:8054=8.8.4.4:53
 ```
 
 Replace [server_address] with the server's public address.
@@ -64,5 +68,5 @@ The client offers -redir and -redir6 (for IPv6) options to handle TCP connection
 
 Start a client listening on port 1082 for redirected TCP connections and port 1083 for redirected TCP IPv6 connections.
 ```
-docker run -d --name go-shadowsocks2  foxundermoon/go-shadowsocks2  -c 'ss://AEAD_CHACHA20_POLY1305:your-password@[server_address]:8488' -redir :1082 -redir6 :1083
+docker run -d --name go-shadowsocks2-client -p 1082:1082 -p 1083:1083 foxundermoon/go-shadowsocks2 -c 'ss://AEAD_CHACHA20_POLY1305:your-password@[server_address]:8488' -redir :1082 -redir6 :1083
 ```
